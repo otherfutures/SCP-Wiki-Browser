@@ -1,3 +1,5 @@
+#
+
 # Brief Description
 A commandline SCP Wiki browser. It can save entries as .txt files (or not, if you so choose), read entries aloud, and browse random entries. It also pretty prints blockquotes in an ASCII frame. 
 
@@ -6,10 +8,12 @@ N.B. It doesn't show images (although it does link to them in Markdown formattin
 <br>
 
 # Sample Screenshots
-<img src="./Documentation Assets/Entry Sample (SCP-010).jpg" height="230" alt="Entry Sample (SCP-010).jpg">
-<img src="./Documentation Assets/ASCII Frame Blockquotes Sample.jpg" height="230" alt="Entry Sample (SCP-010).jpg">
-<br>
-<br>
+<div class="image-container">
+    <img src="./Documentation Assets/Entry Sample (SCP-010).jpg" width="230" alt="Entry Sample (SCP-010).jpg">
+</div>
+<div class="image-container">
+    <img src="./Documentation Assets/ASCII Frame Blockquotes Sample.jpg" width="230" alt="ASCII Frame Blockquotes Sample.jpg">
+</div>
 
 # Configuration & Usage
 1. Fill in `HEADERINFO` using one of the below (whichever you prefer; there's not much difference between the two).
