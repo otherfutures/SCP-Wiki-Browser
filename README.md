@@ -1,7 +1,7 @@
 #
 
 # Brief Description
-A commandline SCP Wiki browser. It can save entries as .txt files (or not, if you so choose), read entries aloud, and browse random entries. It also pretty prints blockquotes in an ASCII frame. 
+A CLI/commandline SCP Wiki browser. It can save entries as .txt files (or not, if you so choose), read entries aloud, and browse random entries. It also pretty prints blockquotes in an ASCII frame. 
 
 N.B. It doesn't show images (although it does link to them in Markdown formatting), but fortunately most SCP entries are pure text. 
 <br>
