@@ -8,12 +8,9 @@ N.B. It doesn't show images (although it does link to them in Markdown formattin
 <br>
 
 # Sample Screenshots
-<div class="image-container">
-    <img src="./Documentation Assets/Entry Sample (SCP-010).jpg" width="230" alt="Entry Sample (SCP-010).jpg">
-</div>
-<div class="image-container">
-    <img src="./Documentation Assets/ASCII Frame Blockquotes Sample.jpg" width="230" alt="ASCII Frame Blockquotes Sample.jpg">
-</div>
+![Entry Sample (SCP-010).jpg](./Documentation%20Assets/Entry%20Sample%20(SCP-010).jpg) | ![ASCII Frame Blockquotes Sample.jpg](./Documentation%20Assets/ASCII%20Frame%20Blockquotes%20Sample.jpg)
+<br>
+<br>
 
 # Configuration & Usage
 1. Fill in `HEADERINFO` using one of the below (whichever you prefer; there's not much difference between the two).
