@@ -38,7 +38,7 @@ HEADERINFO = {
 
 4. Save `scp-reader.py` to save your settings once you're done.
 
-5. Install the required 3rd party libraries. You can enter `pip install -r requirements.txt` into your terminal to install the libraries in one go after `cd`ing to this repo.
+5. Install the required 3rd party libraries. You can enter `pip install -r requirements.txt` into your terminal to install the libraries in one go after `cd`ing to `src` inside this repo.
 
 6. Give it a go! The usage is e.g. `python scp-reader.py 10` (it will automatically find the right URL, which in this case would be https://scp-wiki.wikidot.com/scp-010 ; note that you don't have to enter `python scp.reader.py 010`). Note there are also other options available which can be passed as CLI args (e.g. `python scp-reader.py 10 -a` will read the entry aloud for you, `python scp-reader.py10 -at` if you want to read along with the audio). You can also combine CLI args (e.g. `python scp-reader 10 -r -t` to find a random SCP entry without saving it/the .txt to your computer).
 <br>
