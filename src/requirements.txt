@@ -1,0 +1,4 @@
+requests==2.31.0
+beautifulsoup4==4.12.2
+pyttsx3==2.90
+keyboard==0.13.5
