@@ -42,9 +42,7 @@ def main():
         if check_contents(soup):
             soup = soup.find("div", id="page-content")  # Look only at SCP entry
             formatted_text = "".join(format_text(soup))
-            output_text = wrap_lines(
-                formatted_text
-            )  # Pretty print for readibility
+            output_text = wrap_lines(formatted_text)  # Pretty print for readibility
 
             if not args.audio:
                 print(auto_indent(output_text))
@@ -54,9 +52,7 @@ def main():
 
             if args.text:
                 print(f"{auto_indent('=' * (LINE_WIDTH))}")
-                download_page(
-                    formatted_text
-                )  # Less awk. pauses for text to speech
+                download_page(formatted_text)  # Less awk. pauses for text to speech
                 print(f"{auto_indent('=' * (LINE_WIDTH))}\n")
 
             if args.audio or args.audio_text:
@@ -67,9 +63,7 @@ def main():
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        description="CLI Browser for SCP Wiki Entries"
-    )
+    parser = argparse.ArgumentParser(description="CLI Browser for SCP Wiki Entries")
     parser.add_argument(
         "number",
         nargs="?",  # Optional positional arg.
@@ -140,9 +134,7 @@ def parse_args():
         sys.exit(0)
 
     if args.random and args.number is not None:
-        print(
-            f"\n! Error: pass -r/--random or a specific SCP number, but not both.\n"
-        )
+        print(f"\n! Error: pass -r/--random or a specific SCP number, but not both.\n")
         sys.exit(1)
 
     if args.get_all:
@@ -202,7 +194,7 @@ def fetch_url(args):
     if args.number:
         number = int(args.number)
     else:
-        print(f"\n! Error generating URL")
+        print(f"\n! Error generating URL\n")
         sys.exit(1)
 
     if check_number(int(number)) and not args.overwrite:
@@ -227,9 +219,7 @@ def check_number(number):
 
 def check_DESTINATION_exists():
     if not os.path.exists(DESTINATION):
-        raise ValueError(
-            f"! Error: Cannot find DESTINATION folder at {DESTINATION}"
-        )
+        raise ValueError(f"! Error: Cannot find DESTINATION folder at {DESTINATION}")
         sys.exit(1)
     return
 
@@ -251,9 +241,7 @@ def get_html_content(url):
     elif response.status_code == 404:
         print(f"\n! Page not found (possibly no contents)\n")
     else:
-        print(
-            f"\n! Failed to fetch content from {url}: {response.status_code}\n"
-        )
+        print(f"\n! Failed to fetch content from {url}: {response.status_code}\n")
         return None
 
 
@@ -275,9 +263,7 @@ def download_page(contents, count=0):
             scp_filename = f"{scp_filename} - {counter:0{len(MAX_SCP_NUMBER)}d}"
 
     try:
-        with open(
-            os.path.join(DESTINATION, scp_filename), "w", encoding="utf-8"
-        ) as f:
+        with open(os.path.join(DESTINATION, scp_filename), "w", encoding="utf-8") as f:
             f.write(contents)
         print(auto_indent(f"+ Saved {scp_filename} to {DESTINATION}"))
         count += 1
@@ -295,9 +281,7 @@ def extract_number(input_string):
 
 def show_text_file(number, args):
     scp_filename = f"SCP-{number}.txt"
-    with open(
-        os.path.join(DESTINATION, scp_filename), "r", encoding="utf-8"
-    ) as f:
+    with open(os.path.join(DESTINATION, scp_filename), "r", encoding="utf-8") as f:
         contents = f.read()
 
     if not args.audio:
@@ -329,10 +313,9 @@ def format_text(soup):
 
     footnotes = {}
 
-    for tag in soup.find_all(["blockquote", "p", "img", "div"]):
+    for tag in soup.find_all(["blockquote", "p", "img", "div", "li"]):
         if tag.find_parents(
-            "div",
-            class_=["licensebox", "page-rate-widget-box", "authorlink-wrapper"],
+            "div", class_=["licensebox", "page-rate-widget-box", "authorlink-wrapper"]
         ):
             continue
         if tag.find_parents("span", class_="printuser avatarhover"):
@@ -353,9 +336,7 @@ def format_text(soup):
             if blockquote_count == 2:
                 blockquote_content_str = "\n".join(blockquote_content)
                 wrapped_blockquote = wrap_lines(blockquote_content_str, 84)
-                formatted_text_parts.append(
-                    create_ascii_frame(wrapped_blockquote)
-                )
+                formatted_text_parts.append(create_ascii_frame(wrapped_blockquote))
                 formatted_text_parts.append(f"\n")
                 blockquote_content = []
                 blockquote_count = 0
@@ -383,6 +364,9 @@ def format_text(soup):
             if div_text and div_text not in omit_set:
                 formatted_text_parts.append(f"\n{div_text}\n")
                 omit_set.add(div_text)
+
+        elif tag.name == "li":
+            formatted_text_parts.append(f"\n- {(format_paragraph(tag)).strip()}\n")
 
         elif tag.name == "div" and "footnotes-footer" in tag.get("class", []):
             formatted_text_parts.append(f"\n**Footnotes**\n")
@@ -420,9 +404,7 @@ def format_paragraph(tag):
     for footnote in soup.find_all("sup", class_="footnoteref"):
         a_tag = footnote.find("a")
         if a_tag:
-            footnote_id = (
-                a_tag.text
-            )  # Using .get_text created inconsist. space issues
+            footnote_id = a_tag.text  # Using .get_text created inconsist. space issues
             a_tag.string = f"^[{footnote_id}]"
 
     tag_text = soup.text
@@ -480,14 +462,10 @@ def create_ascii_frame(content, padding=2):
 
 
 def text_to_speech(text, rate=175, voice_id=1):
-    stop_event = (
-        threading.Event()
-    )  # Create an event to signal spinner thread to stop
+    stop_event = threading.Event()  # Create an event to signal spinner thread to stop
 
     # Both multipro. & threading for interruptibility & to limit mem. use (respectively)
-    speech = multiprocessing.Process(
-        target=speak_text, args=(text, rate, voice_id)
-    )
+    speech = multiprocessing.Process(target=speak_text, args=(text, rate, voice_id))
     spinner_thread = threading.Thread(target=spinner, args=(stop_event,))
 
     speech.start()
@@ -497,9 +475,7 @@ def text_to_speech(text, rate=175, voice_id=1):
         if keyboard.is_pressed("q"):
             speech.terminate()
         else:
-            sleep(
-                0.2
-            )  # Less CPU intensive; replace w/ continue for immed. response
+            sleep(0.2)  # Less CPU intensive; replace w/ continue for immed. response
 
     speech.join()  # Wait for the text-to-speech thread to finish
     stop_event.set()  # Set the event to stop the spinner
@@ -522,9 +498,7 @@ def speak_text(text, rate, voice_id):
 def spinner(stop_event):
     while not stop_event.is_set():
         for char in "-\\|/":  # Simple spinner animation
-            print(
-                f"\r{char} Reading entry ('q' to quit)...", end="", flush=True
-            )
+            print(f"\r{char} Reading entry ('q' to quit)...", end="", flush=True)
             sleep(0.2)  # Slower speed to evoke tape turning
 
 
